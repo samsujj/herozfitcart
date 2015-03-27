@@ -1,0 +1,17 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: KTA30
+ * Date: 11/8/14
+ * Time: 1:05 PM
+ */
+
+
+
+function custommodule_init(){
+    echo 'Today: \n';
+    echo date('m/d/Y');
+    exit;
+}
+
+

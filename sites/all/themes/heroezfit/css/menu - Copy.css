@@ -1,0 +1,147 @@
+ul.menu li{ margin:0; padding:2px 0 0 0;}
+#nav {
+
+position: relative;
+	
+	margin-left:0px;
+	margin-top:-3px;
+	
+}
+#nav > a {
+	display: none;
+	font-size:22px;
+
+}
+#nav li {
+	position: relative;
+	list-style:none;
+
+	
+}
+#nav li a {
+   font-family: "Flaticon"; color:#008081; font-size:22px;
+	 display:block;
+
+padding:0 9px !important;
+
+}
+
+#nav li a:active {
+color:#272727;
+}
+#nav span:after {
+	width: 0;
+	height: 0;
+	border: 0.313em solid transparent; /* 5 */
+	border-bottom: none;
+	border-top-color: #efa585;
+	content: '';
+	vertical-align: middle;
+	display: inline-block;
+	position: relative;
+}
+/* first level */
+
+			#nav > ul {
+	
+}
+#nav > ul > li {
+
+	height: 100%;
+	float: left;
+
+	
+}
+#nav > ul > li > a {
+	height: 100%;
+	font-size: 28px; /* 24 */
+	display:block;
+
+text-align: center;
+padding:0px 0 0 0;
+}
+ #nav > ul > li:not( :last-child ) > a {
+
+}
+ #nav > ul > li:hover > a,  #nav > ul:not( :hover ) > li.active > a {
+ 
+ color:#272727 ;
+ text-decoration:none;
+ 
+}
+/* second level */
+
+#nav li:hover ul {
+	display: block;
+	left: 0;
+	right: 0;
+}
+ #nav li:not( :first-child ):hover ul {
+ left: -1px;
+}
+#nav li ul a {
+	font-size: 14px; /* 20 */
+	border-top: 1px solid #eaeaea;
+	 text-shadow:none;
+	 display:block;
+	
+	 
+}
+ #nav li ul li a:hover,  #nav li ul:not( :hover ) li.active a {
+
+ color:#fff ;
+ text-decoration:none;
+ background:#333;
+
+}
+
+
+ @media screen and (max-width:1199px) {
+ 
+ #nav {
+
+	margin-top:10px;
+	
+}
+ #nav li a {
+   
+
+padding:0 8px !important;
+
+}
+
+#nav > ul > li > a{
+	font-size:24px;
+
+
+}
+#nav li ul a {font-size:18px;}
+ }
+ 
+ 
+ 
+ @media screen and (max-width:991px) {
+ #nav::before { 
+        content: 'MENU '; font-family: "Flaticon";  color:#333; font-size:26px; text-align:center; height:30px; line-height:30px;
+		 
+	
+		
+		
+}
+
+ #nav { overflow:hidden; height:auto; clear:both; margin-bottom:16px; margin-top:-4px;  height:32px; text-align:center; cursor:pointer; }
+  #nav:hover{ height:auto;}
+#nav > ul > li{
+width:100%; text-align:center;
+
+}
+	#nav > ul > li{  border-bottom: 1px solid #000; line-height:48px; background:#008081;}
+		#nav > ul > li a{ color:#fff;}
+		
+		 #nav > ul > li:hover > a,  #nav > ul:not( :hover ) > li.active > a {
+ 
+ color:#fff ;
+ text-decoration:none;
+  background:#333;
+}
+}

@@ -1,0 +1,15 @@
+<?php
+function custommodule1_enable() {
+  $current = variable_get('mail_system', array('default-system' => 'DefaultMailSystem'));
+  $addition = array('mymodule' => 'MymoduleMailSystem');
+  variable_set('mail_system', array_merge($current, $addition));
+}
+
+
+
+
+function custommodule1_disable() {
+  $mail_system = variable_get('mail_system', array('default-system' => 'DefaultMailSystem'));
+  unset($mail_system['mymodule']);
+  variable_set('mail_system', $mail_system);
+}

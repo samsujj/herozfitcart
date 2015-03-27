@@ -1,0 +1,145 @@
+ul.menu li{ margin:0; padding:2px 0 0 0;}
+#nav {
+
+position: relative;
+	
+	margin-left:0px;
+	margin-top:-3px;
+	
+}
+#nav > a {
+	display: none;
+	font-size:22px;
+
+}
+#nav li {
+	position: relative;
+	list-style:none;
+
+	
+}
+#nav li a {
+   font-family: "Flaticon"; color:#008081; font-size:22px;
+	 display:block;
+
+padding:0 9px !important;
+
+}
+
+#nav li a:active {
+color:#272727;
+}
+#nav span:after {
+	width: 0;
+	height: 0;
+	border: 0.313em solid transparent; /* 5 */
+	border-bottom: none;
+	border-top-color: #efa585;
+	content: '';
+	vertical-align: middle;
+	display: inline-block;
+	position: relative;
+}
+/* first level */
+
+			#nav > ul {
+	
+}
+#nav > ul > li {
+
+	height: 100%;
+	float: left;
+
+	
+}
+#nav > ul > li > a {
+	height: 100%;
+	font-size: 28px; /* 24 */
+	display:block;
+
+text-align: center;
+padding:0px 0 0 0;
+}
+ #nav > ul > li:not( :last-child ) > a {
+
+}
+ #nav > ul > li:hover > a,  #nav > ul:not( :hover ) > li.active > a {
+ 
+ color:#272727 ;
+ text-decoration:none;
+ 
+}
+/* second level */
+
+
+
+  #nav li ul {
+  padding: 0;
+  position: absolute;
+  top: 35px;
+  left: 0;
+  width: 200px;
+  z-index:999;
+  height:auto!important;
+
+ 
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  overflow:inherit!important;
+ 
+}
+ #nav li ul li { 
+  background: #333; 
+font-family: "Flaticon"; color:#fff; font-size:22px;
+	 display:block;
+
+padding:10px 9px !important;
+border-bottom:solid 1px #555;
+cursor:pointer;
+position:relative;
+ height:auto!important;
+ 
+ overflow:inherit!important;
+
+
+  
+}
+
+
+ 
+ #nav li:hover ul {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+
+}
+
+ #nav li ul li ul{ padding: 0;
+  position: absolute;
+  top: 0!important;
+  left: 180px!important;
+  width: 250px;
+  z-index:999;
+  height:auto!important;
+
+ 
+  display: none!important;
+  opacity: 0;
+  visibility: hidden;
+  overflow:inherit!important;   border:solid 1px #555;}
+ 
+  #nav li ul li:hover ul{  display: block!important;
+  opacity: 1;
+  visibility: visible;}
+
+
+ #nav li ul li ul li { 
+  background: #333; 
+
+  
+  }
+  
+   #nav li ul li ul li a{ color:#ccc; text-decoration:none; font-size:22px;}
+   
+    #nav li ul li ul li a:hover{ color:#fff;}

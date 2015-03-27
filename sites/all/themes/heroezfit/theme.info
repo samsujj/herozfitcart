@@ -1,0 +1,41 @@
+name=heroezfit
+description=This is the frontend theme of the project named Heroezfit
+core=7.x
+engine=phptemplate
+stylesheets[all][] = css/style.css
+stylesheets[all][] = css/bootstrap.css
+stylesheets[all][] = css/menu.css
+stylesheets[all][] = css/media.css
+;stylesheets[all][] = css/facebox.css
+stylesheets[all][] = css/jquery.bxslider.css
+
+stylesheets[all][] = css/responsiveslides.css
+stylesheets[all][] = css/anythingzoomer.css
+scripts[] = js/bootstrap.min.js
+scripts[] = js/bootbox.min.js
+scripts[] = js/Common.js
+scripts[] = js/imgLiquid.js
+;scripts[] = js/facebox.js
+
+scripts[] = js/jquery.anythingzoomer.js
+scripts[] = js/jquery.bxslider.min.js
+
+scripts[] = js/responsiveslides.min.js
+regions[header_first]=First Header
+regions[header_logo]=Header Logo
+regions[header_menu]=Header Menu
+regions[user_menu]=User Menu
+regions[content]= Content
+regions[footer_first]= First Bottom
+regions[footer_second]= Second Bottom
+features[] = logo
+features[] = name
+features[] = slogan
+features[] = node_user_picture
+features[] = comment_user_picture
+features[] = comment_user_verification
+features[] = favicon
+features[] = main_menu
+features[] = secondary_menu
+settings[slideshow_display]  = 1
+settings[breadcrumbs]  = 1

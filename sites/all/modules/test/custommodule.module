@@ -1,0 +1,380 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: KTA30
+ * Date: 11/8/14
+ * Time: 1:05 PM
+ */
+
+
+
+function custommodule_permission() {
+    return array(
+        'custommodule verification' => array(
+            'title' => t('Email Verification'),
+            'description' => t('Perform view for my module.'),
+        ),
+        'custommodule config' => array(
+            'title' => t('Admin View'),
+            'description' => t('Perform config for my module.'),
+        ),
+    );
+}
+
+
+function custommodule_preprocess_node(&$variables) {
+    $node = $variables['node'];
+	
+    //echo 98;
+    //exit;
+    if ($variables['view_mode'] == 'full' && node_is_page($variables['node'])) {
+        $variables['classes_array'][] = 'node-full';
+    }
+    $variables['date'] = t('!datetime', array('!datetime' =>  date('j F Y', $variables['created'])));
+    if (  $variables['node']->type == 'banner_image' || $variables['node']->type =='about_us_home_' || $variables['node']->type == 'dynamic_content') {
+        $variables['title'] = FALSE;
+        $variables['content']['links'] = FALSE;
+        
+    }
+
+
+
+
+
+    
+
+
+}
+
+
+
+
+function custommodule_menu() {
+    $items = array();
+    $items['custommodule/verification'] = array(
+        'title' => 'Our Example ',
+        'page callback' => 'verification',
+        'access callback' => TRUE,
+        'access arguments' => array('custom email verification'),
+        'expanded' => TRUE,
+        'type'=>MENU_NORMAL_ITEM,
+    );
+
+
+    return $items;
+}
+
+
+function verification() {
+    //echo 90;
+    $a=arg();
+    //echo ($a[2]);
+
+    $users = entity_load('user');
+    foreach ($users as $user) {
+        if ($user->uid == $a[2]) {
+            $user->status = 1;
+            entity_save('user', $user);
+        }
+    }
+    header('Location: '.$GLOBALS['base_url'].'/user/login');
+
+
+    //exit;
+
+}
+
+function custommodule_clientside_validation_rule_alter(&$js_rules, $element, $context) {
+    switch($context['type']) {
+        case 'form_validate':
+            if (in_array('user_register_validate', $context['functions'])) {
+                $value = array(
+                    'element_name' => $element['account']['pass']['pass2']['#name'],
+                    'name' => $element['account']['pass']['pass2']['#title'],
+                );
+                _clientside_validation_set_equal($element['account']['pass']['pass1']['#name'],  $element['account']['pass']['pass1']['#title'], $value, $js_rules);
+            }
+            break;
+    }
+}
+
+
+
+
+
+
+
+function custommodule_form_alter(&$form, &$form_state, $form_id) {
+
+
+    $form['#after_build'][] = 'CUSTOM_MODULE_NODE_TYPE_node_form_after_build';
+
+    if ($form_id == 'user_register_form') {
+
+
+        //$form['#validate'][] = 'custom_registration_form_validation';
+
+        $form['#prefix'] = '<div class="loginForm"><h2> <span>Sign</span> up !!</h2>';
+        $form['#suffix'] = '<span class="sign-up-text">Have an account with Bargain Community? <a href="'.$GLOBALS['base_url'].'/user/login"> Login</a></span></div>';
+
+       /* $form['name']['#attributes']['placeholder'] = t( 'Username' );
+        $form['pass']['#attributes']['placeholder'] = t( 'Password' );
+        $form['mail']['#attributes']['placeholder'] = t( 'Password' );*/
+
+        $form['account']['name']['#attributes']['placeholder'] = t( 'Desired Username' );
+        $form['account']['mail']['#attributes']['placeholder'] = t( 'E-mail' );
+        //$form['account']['pass']['#attributes']['placeholder'] = t( 'Confirm E-mail' );
+        //$form['account']['pass']['#default_value'] = t( 'Confirm E-mail..............' );
+        //$form['account']['conf_mail']['#attributes']['placeholder'] = t( 'Confirm E-mail' );
+
+
+        $form['account']['pass']['#process'] = array('form_process_password_confirm', 'register_alter_password_confirm');
+        
+
+
+
+
+
+    }
+
+    if ($form_id == 'user_login') {
+
+
+        //$form['#validate'][] = 'custom_registration_form_validation';
+        $form['name']['#attributes']['placeholder'] = t( 'Username' );
+        $form['pass']['#attributes']['placeholder'] = t( 'Password' );
+        $form['#prefix'] = '<div class="loginForm"><h2> <span>Log</span> in</h2>';
+        $form['#suffix'] = '<span class="sign-up-text">Forgot You Password? <a href="'.$GLOBALS['base_url'].'/user/password"> Click Here</a></span></div>';
+        //$form['actions']['submit']['#submit'][] = 'MYMODULE_submit';
+
+
+
+    }
+
+    if ($form_id == 'user_pass') {
+
+
+        //$form['#validate'][] = 'custom_registration_form_validation';
+        $form['name']['#attributes']['placeholder'] = t( 'Username Or Email' );
+        $form['#prefix'] = '<div class="loginForm"><h2> <span>Reset</span> Password</h2>';
+        $form['#suffix'] = '<span class="sign-up-text">Back To Login? <a href="'.$GLOBALS['base_url'].'/user/login"> Login</a></span></div>';
+
+
+
+
+    }
+    if($form_id == 'image_gallery_node_form'){
+
+        $form['#prefix'] = '<div class="FormClass">';
+        $form['#suffix'] = '</div>';
+
+
+        $form['actions']['submit']['#submit'][] = 'MYMODULE_submit';
+
+    }
+
+
+    if($form_id == 'video_gallery_node_form'){
+        $form['#prefix'] = '<div class="FormClass">';
+        $form['#suffix'] = '</div>';
+
+        $form['actions']['submit']['#submit'][] = 'MYMODULE_submit1';
+
+    }
+
+        if($form_id == 'category_node_form'){
+
+            $form['#prefix'] = '<div class="FormClass">';
+            $form['#suffix'] = '</div>';
+            $form['actions']['submit']['#submit'][] = 'MYMODULE_submit2';
+
+        }
+
+
+
+        if($form_id == 'product_node_form'){
+
+            //$variables['content']['list_price'] = FALSE;
+            //$form['list_price']['#access'] = false;
+            $form['base']['prices']['list_price']['#type'] = 'hidden';
+            $form['base']['prices']['cost']['#type'] = 'hidden';
+            $form['base']['shippable']['#type'] = 'hidden';
+            $form['base']['prices']['sell_price']['#title'] = 'Price';
+            //var_dump($form);
+           // exit;blog-node-form
+
+
+            $form['#prefix'] = '<div class="FormClass">';
+            $form['#suffix'] = '</div>';
+          // $form['actions']['submit']['#submit'][] = 'MYMODULE_submit3';
+
+        }
+
+
+    if($form_id == 'blog_node_form'){
+
+        $form['#prefix'] = '<div class="FormClass">';
+        $form['#suffix'] = '</div>';
+        $form['actions']['submit']['#submit'][] = 'MYMODULE_submit4';
+
+    }
+
+    if($form_id=='uc_object_attributes_form'){
+
+
+      // $form['actions']['op']['#title']='Remove';
+        $form['actions']['save']['#value']='Remove Selected';
+
+
+
+    }
+
+    if($form_id=='uc_attribute_options_form'){
+        $path = current_path();
+       //$ar=arg();
+       //var_dump($path);
+        $form['#prefix'] = '<div class="FormClass"><a href="/'.$path.'/add">Add Options</a>';
+        $form['#suffix'] = '</div>';
+       // $form['actions']['submit']['#submit'][] = 'MYMODULE_submit5';
+    }
+
+    if($form_id=='uc_object_options_form'){
+
+
+        //echo "<pre>";
+        //var_dump(count($form['attributes']));
+     // var_dump($form['attributes'][1]['options']);
+
+        /*foreach($form['attributes'][1]['options'] as $v=>$a)
+
+        {
+            //var_dump($v."==".var_dump($a)."<br/>||||||");
+            var_dump($a['cost']);
+            $a['cost']["#title_display"]="invisible";;
+        }*/
+        //exit;
+
+    }
+
+
+
+   if($form_id=='webform_client_form_63'){
+
+       $form['#prefix'] = '<div class="FormClass">';
+       $form['#suffix'] = '</div>';
+
+
+   }
+
+
+     if($form_id=='fit_report_content_node_form'){
+
+        // echo "<pre>";
+         //var_dump($form['edit']['und']['0']['format']);
+         //exit;
+         $form['#prefix'] = '<div class="FormClass">';
+         $form['#suffix'] = '</div>';
+         //$form['#after_build'][] = 'CUSTOM_MODULE_NODE_TYPE_node_form_after_build';
+         $form['actions']['submit']['#submit'][] = 'MYMODULE_submit8';
+
+     }
+
+
+    if($form_id=='fit_article_node_form'){
+
+        // echo "<pre>";
+        //var_dump($form['edit']['und']['0']['format']);
+        //exit;
+        $form['#prefix'] = '<div class="FormClass">';
+        $form['#suffix'] = '</div>';
+        //$form['#after_build'][] = 'CUSTOM_MODULE_NODE_TYPE_node_form_after_build';
+        //$form['actions']['submit']['#submit'][] = 'MYMODULE_submit9';
+
+    }
+
+}
+
+function CUSTOM_MODULE_NODE_TYPE_node_form_after_build($form) {
+    // We want this on a specific field
+    global $user;
+    //echo "<pre>";
+    //var_dump($user->roles);
+    //exit;
+    if (!in_array('administrator', $user->roles)){
+        //do stuff
+
+    $form['body']['und']['0']['format']['#access'] = FALSE;
+    return $form;
+
+
+    }
+    else{
+
+        return $form;
+
+    }
+
+    }
+
+
+
+
+function register_alter_password_confirm($element) {
+    $element['pass1']['#title_display'] = "invisible";
+    $element['pass1']['#attributes']['placeholder'] = t("Password");
+    $element['pass2']['#title_display'] = "invisible";
+    $element['pass2']['#attributes']['placeholder'] = t("Confirm password");
+    return $element;
+}
+
+function MYMODULE_submit ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/image-gallery-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit1 ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/video-gallery-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit2 ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/category-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit3 ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/product-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit4 ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/blog-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit5 ($form, &$form_state) {
+    //code here
+    $path = current_path();
+    var_dump($path);
+    $form_state['redirect'] = '/blog-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit8 ($form, &$form_state) {
+    //code here
+    $path = current_path();
+    //var_dump($path);
+    $form_state['redirect'] = '/report-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

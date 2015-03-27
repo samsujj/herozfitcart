@@ -1,0 +1,30 @@
+2.16 (2010-06-08)
+    - Fixed conflict with imagefield_crop module.
+2.15 (2010-02-27)
+    - Added node body as description for Magic Thumb.
+2.14 (2010-02-09)
+    - More moodule params added.
+2.13 (2010-01-26)
+    - Admin theme error fixed when module is enabled.
+2.12 (2010-01-25)
+    - Unknown modifier PHP warning fixed.
+2.11 (2009-12-08)
+    - Dependencies check.
+2.10 (2009-12-07)
+    - Added support for ImageField module.
+    - Added support for ImageCache module.
+2.9 (2009-09-13)
+    - Added support for UberCart product images.
+    - Added support for UberCart product attributes images (uc_option_image module).
+2.8 (2009-08-14)
+    - Improvements to image assist module links.
+2.7 (2009-08-03)
+    - Now supports image assist module links.
+2.6 (2009-06-17)
+    - Now compatible in Drupal v5 when caching mode is enabled.
+2.5 (2009-04-16)
+    - PHP warning fixed.
+2.4 (2009-03-17)
+    - 'derivatives' parameter description fixed.
+2.3 (2009-03-17)
+    - Added CHANGELOG.

@@ -1,0 +1,174 @@
+@media screen and (max-width:1199px) {
+
+.top_text{ width:100%; text-align:center; padding:15px 0;}
+
+.sinput{  width:235px;}
+.top-link{ width:331px; float:none; margin:0 auto;}
+
+.top-acount-div{ display:block; float:none; margin:0 auto; width:240px;}
+
+.view-content{ width:940px; margin:20px auto; }
+
+.FormClass{ width:940px; margin:20px auto;}
+
+.home-about-contaon{ width:940px;  } 
+
+
+.node-banner-image{ width: 940px; margin:0 auto;
+ position:relative; margin-top:20px;}
+ 
+
+
+}
+
+
+@media screen and (max-width:991px) {
+
+.home-about-contaon{ width:80%;} 
+
+.top_text{ width:100%; text-align:center; padding-top:5px;}
+
+.top-link{ width:331px; float:none; margin:0 auto;}
+
+
+
+
+.search-div{ width:80%; margin:5px auto; margin-top:10px;}
+.footer-top p{ display:block; width:80%; float:none; margin:12px auto;  padding-right:0px; font-size:14px; color:#fff; text-align:center;}
+.fid-box{ width:80%; float:none; margin:0 auto; background: none; background-image:url(../images/mail.png); background-repeat:no-repeat; background-position:center top; padding:35px 0 4px 0; height:auto; }
+.sinput{  width:96%; float:none; margin:0 auto; display:block; background:#c1bdbd; padding:0 2%; border-radius:4px;}
+.sbtn{ float:none; margin:10px auto; display:block;}
+
+.ficon{ float:none; margin:25px auto; width:100px; margin-bottom:10px;}
+
+.footer-bottom h1{ background:url(../images/fp.png) no-repeat top center;  font-family: 'open_sansregular'; text-align:center; font-size:14px; color:#b3aeb5; padding:40px 0 10px 0px; margin-top:40px;}
+
+.footer-bottom h2{ background:url(../images/fm.png) no-repeat top center;  font-family: 'open_sansregular'; text-align:center;  font-size:14px; color:#b3aeb5; padding:40px 0 10px 0px;}
+
+.footer-bottom .footer-logo{ width:161px; float:none; margin:0 auto; margin-top:40px;}
+.footer-bottom ul li{ list-style:none; float:left; width:25%; margin:5px 8% 5px 0; padding-bottom:4px; border-bottom: solid 1px #444444;}
+
+.page-node #node-7 .content .field-name-field-banner-title{ background:#f2f2f2; width:100%;   font-family: 'bebasregular'; font-size:30px;  position: inherit;  bottom:0;  color:#008081; text-align:center; padding:15px 0 0 0;}
+.page-node #node-7 .content .field-name-field-banner-title-description{ background:#f2f2f2; width:100%; position: inherit;  bottom:0;    font-family: 'lane_-_narrowregular'; font-size:30px; color:#313131; text-align:center; padding:8px 0 0 0; }
+
+.menu-div-body {
+    background: url("../images/menuicon.png") no-repeat scroll 22px 12px #151515;
+    font-family: "open_sansregular";
+    font-size: 14px;
+    height: 55px;
+    padding: 0 0 0 70px;
+    position: fixed;
+    right: -376px;
+    top: 140px;
+    width: 446px;
+    z-index: 99;
+}
+
+.view-content{ width:720px; margin:20px auto;}
+.FormClass{ width:720px; margin:20px auto;}
+
+.view-content img{ margin:0 5px;}
+
+.node-banner-image{ width: 720px; margin:0 auto;}
+.node-banner-image .field-name-field-shop-button a { font-family: 'open_sansregular'; font-size:14px; color:#313131; padding:0px;
+		cursor:pointer; display:block; width:100px; position:absolute; left:42%; bottom:20px;}
+		
+.node-banner-image .field-items {
+    padding-bottom: 0px;
+}
+
+}
+
+@media screen and (max-width:767px) {
+.view-content{ width:94%; margin:20px auto;}
+
+.FormClass{ width:94%; margin:20px auto;}
+
+.home-about-contaon{ width:94%; margin:0 auto;} 
+}
+
+@media screen and (max-width:700px) {
+.top-link{ width:331px; float:none; margin:0 auto;}
+.view-content{ font-size:12px;}
+.view-content th,td{ padding:10px 5px; }
+
+
+}
+
+
+@media screen and (max-width:680px) {
+.footer-bottom ul li{ list-style:none; float:left; width:42%; margin:5px 4%; padding-bottom:4px; border-bottom: solid 1px #444444; }
+.loginForm{ width:80%; margin:25px auto; }
+}
+
+
+
+@media screen and (max-width:1920px) {
+.page-node #node-7 .content {
+    width: 1140px;
+}
+}
+
+@media screen and (max-width: 1199px) {
+.page-node #node-7 .content {
+    width: 940px;
+}
+}
+
+@media screen and (max-width: 991px) {
+.page-node #node-7 .content {
+    width: 720px;
+}
+}
+
+
+@media screen and (max-width: 767px) {
+.page-node #node-7 .content {
+    width: 96%;
+}
+
+.status-wrapper .right-text .commend-box-pro textarea {
+	width:97%!important;
+	height: 15px!important;
+	margin-top:3px;
+	font-size:11px;
+}
+
+}
+
+@media screen and (max-width: 600px) {
+.view-content{ font-size:10px;}
+.FormClass input[type=text]{ width:60%;}
+}
+
+
+@media screen and (max-width: 500px) {
+
+.menu-div-body {
+    background: url("../images/menuicon.png") no-repeat scroll 22px 12px #151515;
+    font-family: "open_sansregular";
+    font-size: 14px;
+    height: 55px;
+    padding: 0 0 0 70px;
+    position: fixed;
+    right: -172px;
+    top: 140px;
+    width: 242px;
+    z-index: 99;
+}
+
+.view-content{ font-size:8px;}
+}
+
+@media screen and (max-width: 407px) {
+.view-content{ font-size:8px; word-break:break-all;}
+}
+
+@media screen and (max-width: 350px) {
+.top-link{ width:90%; float:none; margin:0 auto;}
+.phone{ width:135px; margin:10px auto; display:block; float:none; overflow:hidden;}
+
+.addtocart{ width:60px; margin:5px auto; display:block; float:none; overflow:hidden;}
+
+.wishlist{ width:82px; margin:15px auto; display:block; float:none; overflow:hidden;}  
+}

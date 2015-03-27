@@ -1,0 +1,1233 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: KTA30
+ * Date: 11/8/14
+ * Time: 1:05 PM
+ */
+
+
+
+function custommodule1_init(){
+    //echo 'Today: \n';
+    //echo date('m/d/Y');
+    //exit;
+}
+ 
+ 
+function custommodule1_permission() {
+    return array(
+        'custommodule1 verification' => array(
+            'title' => t('Email Verification'),
+            'description' => t('Perform view for my module.'),
+        ),
+        'custommodule1 config' => array(
+            'title' => t('Admin View'),
+            'description' => t('Perform config for my module.'),
+        ),
+    );
+}
+
+
+function custommodule1_preprocess_node(&$variables) {
+    $node = $variables['node'];
+
+    //echo 98;
+    //exit;
+    if ($variables['view_mode'] == 'full' && node_is_page($variables['node'])) {
+        $variables['classes_array'][] = 'node-full';
+    }
+    $variables['date'] = t('!datetime', array('!datetime' =>  date('j F Y', $variables['created'])));
+    if (  $variables['node']->type == 'banner_image' || $variables['node']->type =='about_us_home_' || $variables['node']->type == 'dynamic_content') {
+        $variables['title'] = FALSE;
+        $variables['content']['links'] = FALSE;
+
+    }
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function custommodule1_menu() {
+    $items = array();
+    $items['custommodule1/verification1'] = array(
+        'title' => 'Our Example ',
+        'page callback' => 'verification1',
+        'access callback' => TRUE,
+        'access arguments' => array('custom email verification'),
+        'expanded' => TRUE,
+        'type'=>MENU_NORMAL_ITEM,
+    );
+    $items['custommodule1/sendemailevent'] = array(
+        'title' => 'Our Example ',
+        'page callback' => 'sendemailevent',
+        'access callback' => TRUE,
+        'access arguments' => array('custom email verification'),
+        'expanded' => TRUE,
+        'type'=>MENU_NORMAL_ITEM,
+    );
+
+    $items['custommodule1/node/search/%'] = array(
+        'page callback' => 'MYMODULE_do_search',
+        'page arguments' => array(3),
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['custommodule1/testmail'] = array(
+        'page callback' => 'custommodule1_testmail',
+        //'page arguments' => array(3),
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['custommodule1/orderstatusmail'] = array(
+        'page callback' => 'custommodule1_orderstatusmail',
+        //'page arguments' => array(3),
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['custommodule1/samecat'] = array(
+        'page callback' => 'custommodule1_samecat',
+        //'page arguments' => array(3),
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['custommodule1/menucat'] = array(
+        'page callback' => 'custommodule1_menucat',
+        //'page arguments' => array(3),
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+
+
+
+
+    return $items;
+}
+
+
+function verification1() {
+    //echo 90;
+    $a=arg();
+    //echo ($a[2]);
+
+    $users = entity_load('user');
+    foreach ($users as $user) {
+        if ($user->uid == $a[2]) {
+            $user->status = 1;
+            entity_save('user', $user);
+        }
+    }
+    header('Location: '.$GLOBALS['base_url'].'/user/login');
+
+
+    //exit;
+
+}
+
+function sendemailevent()
+{
+
+
+    $body = '
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tbody><tr>
+    <td align="center">
+    	<table width="600px" border="0" cellspacing="0" cellpadding="0">
+  <tbody><tr>
+    <td colspan="3" width="50%" bgcolor="#008081" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#FFFFFF; padding:20px 0 20px 10px"><span style="color:#8ce5e6;">Dear</span> fdsf fdsf <span style="color:#8ce5e6;">Order Id:</span>132</td>
+    <td bgcolor="#008081" width="50%" style="font-family:Arial, Helvetica, sans-serif; text-align:right; font-size:12px; color:#FFFFFF; padding:20px 10px 20px 0px"><span style="color:#8ce5e6;">Order Placed On:</span>23 02 2015</td>
+  </tr>
+  <tr>
+    <td colspan="4" style="padding:15px 0;">
+    <a href="#"><img style="display:block; margin:0 auto;" src="http://influxhostserver.com/herozfitcart/sites/default/files/logo.png" border="0"></a>
+    <p style="padding:15px 0 0 0; font-family:Arial, Helvetica, sans-serif; color:#828383; text-align:center; line-height:25px;">Thanks for ordering from Herozfit . Here is a summary of your order.<br>
+    </p>    </td>
+  </tr>
+  <tr>
+    <td colspan="4" bgcolor="#202020" style="font-family:Arial, Helvetica, sans-serif; padding:15px 0; color:#FFFFFF; text-align:center;">Order Details</td>
+  </tr>
+
+  <tr>
+    <td colspan="4">
+    	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tbody><tr>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">S.no</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">Item name</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">Quantity</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">Price</td>
+  </tr>
+</tbody></table>
+	</td>
+  </tr><tr>
+    <td colspan="4">
+    	<table width="100%" cellspacing="0" cellpadding="0" style="border-top:#b4b6b5 solid 2px;">
+  <tbody><tr>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">1</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">product 2<br></td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">1</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">$200.00000</td>
+  </tr>
+</tbody></table>
+    </td>
+  </tr><tr>
+    <td colspan="4" bgcolor="#008081" style="padding:10px 0;">
+    	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#ffffff;">
+  <tbody><tr>
+    <td width="50%" style="padding:5px 0 5px 10px;"><span style="color:#8ce5e6;">Billing Address:</span><br><br>sdfsf,dsfds,2121, USA</td>
+    <td width="50%" style="padding:5px 10px 5px 0px; text-align:right; font-size:15px;"><span style="color:#8ce5e6;">Total Amount:</span> $200<br><br><span style="color:#8ce5e6;">Shipping Charges:</span> $0<br><br><span style="color:#8ce5e6;">Payable Amount:</span> $200</td>
+  </tr>
+</tbody></table>
+
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="4" bgcolor="#202020" style="font-family:Arial, Helvetica, sans-serif; color:#FFFFFF; padding:10px 0; text-align:center; font-size:12px;">Copyright Â© All rights Reserved.</td>
+  </tr>
+</tbody></table>
+
+    </td>
+  </tr>
+</tbody></table>';
+
+    $x=simple_mail_send('debasiskar00@gmail.com', 'bhaskar.involutiontech@gmail.com', 'testmail subject', $body);
+    var_dump($x);
+}
+
+
+
+
+
+
+function custommodule1_clientside_validation_rule_alter(&$js_rules, $element, $context) {
+    switch($context['type']) {
+        case 'form_validate':
+            if (in_array('user_register_validate', $context['functions'])) {
+                $value = array(
+                    'element_name' => $element['account']['pass']['pass2']['#name'],
+                    'name' => $element['account']['pass']['pass2']['#title'],
+                );
+                _clientside_validation_set_equal($element['account']['pass']['pass1']['#name'],  $element['account']['pass']['pass1']['#title'], $value, $js_rules);
+            }
+            break;
+    }
+}
+
+
+
+
+
+
+
+function custommodule1_form_alter(&$form, &$form_state, $form_id) {
+
+
+    $form['#after_build'][] = 'CUSTOM_MODULE1_NODE_TYPE_node_form_after_build1';
+
+
+    if ($form_id == 'custom_search_blocks_form_1') {
+
+        $form['custom_search_blocks_form_1']['#attributes']['placeholder'] = false;
+        //var_dump($form);
+
+    }
+    if($form_id=='subscribed_mail_node_form'){
+
+        $form['title']['#access'] = FALSE;
+        $form['actions']['submit']['#submit'][] = 'Subscribemail_submit';
+        $form['actions']['submit']['#value']='Subscribe';
+
+
+    }
+
+
+    if ($form_id == 'user_register_form') {
+
+
+        //$form['#validate'][] = 'custom_registration_form_validation';
+
+        $form['#prefix'] = '<div class="loginForm"><h2> <span>Sign</span> up </h2>';
+        $form['#suffix'] = '<span class="sign-up-text">Already Have An Account With Heroez Fit?<a href="'.$GLOBALS['base_url'].'/user/login"> Login</a></span></div>';
+
+        /* $form['name']['#attributes']['placeholder'] = t( 'Username' );
+         $form['pass']['#attributes']['placeholder'] = t( 'Password' );
+         $form['mail']['#attributes']['placeholder'] = t( 'Password' );*/
+
+        $form['account']['name']['#attributes']['placeholder'] = t( 'Desired Username' );
+        $form['account']['mail']['#attributes']['placeholder'] = t( 'E-mail' );
+        $form['actions']['submit']['#value'] = t('Create A New Account');
+        //$form['account']['pass']['#attributes']['placeholder'] = t( 'Confirm E-mail' );
+        //$form['account']['pass']['#default_value'] = t( 'Confirm E-mail..............' );
+        //$form['account']['conf_mail']['#attributes']['placeholder'] = t( 'Confirm E-mail' );
+
+        $form['address[first_name]']['#access']=false;
+
+
+        $form['account']['pass']['#process'] = array('form_process_password_confirm', 'register_alter_password_confirm1');
+
+
+
+
+
+
+    }
+
+
+
+    if ($form_id == 'user_login') {
+
+
+        //$form['#validate'][] = 'custom_registration_form_validation';
+        $form['name']['#attributes']['placeholder'] = t( 'Username' );
+        $form['name']['#description'] = t('');
+        $form['pass']['#description'] = t('');
+        $form['pass']['#attributes']['placeholder'] = t( 'Password' );
+        $form['#prefix'] = '<div class="loginForm"><h2> <span>Log</span> in</h2>';
+        $form['#suffix'] = '<span class="sign-up-text">Forgot Your Password? <a href="'.$GLOBALS['base_url'].'/user/password"> Click Here</a></span></div>';
+        //$form['actions']['submit']['#submit'][] = 'MYMODULE_submita';
+
+
+
+    }
+
+    if ($form_id == 'user_pass') {
+
+
+        //$form['#validate'][] = 'custom_registration_form_validation';
+        $form['name']['#attributes']['placeholder'] = t( 'Username Or Email' );
+        $form['#prefix'] = '<div class="loginForm"><h2> <span>Forgot</span> Password</h2><br />Please enter the email address registered on your account.';
+        $form['#suffix'] = '<span class="sign-up-text">Back To Login? <a href="'.$GLOBALS['base_url'].'/user/login"> Login</a></span></div>';
+
+
+
+
+    }
+    if($form_id == 'image_gallery_node_form'){
+
+        $x=arg();
+        if($x[2]=='edit')
+            $form['#prefix'] = '<div class="FormClass"> <h4>Edit Image Gallery</h4>';
+        else
+            $form['#prefix'] = '<div class="FormClass"> <h4>Add Image Gallery</h4>';
+
+        /* $form['#prefix'] = '<div class="FormClass"> <h4>Add / Edit Image Gallery</h4>';*/
+        $form['#suffix'] = '</div>';
+
+
+        $form['actions']['submit']['#submit'][] = 'MYMODULE_submita';
+
+    }
+
+
+    if($form_id == 'video_gallery_node_form'){
+        $x=arg();
+        if($x[2]=='edit')
+            $form['#prefix'] = '<div class="FormClass"> <h4>Edit Video Gallery</h4>';
+        else
+            $form['#prefix'] = '<div class="FormClass"> <h4>Add Video Gallery</h4>';
+        /*$form['#prefix'] = '<div class="FormClass"> <h4>Add / Edit Video Gallery</h4>';*/
+        $form['#suffix'] = '</div>';
+
+        $form['actions']['submit']['#submit'][] = 'MYMODULE_submit1a';
+
+    }
+
+    if($form_id == 'category_node_form'){
+
+        $x=arg();
+        if($x[2]=='edit')
+            $form['#prefix'] = '<div class="FormClass"> <h4>Edit Category</h4>';
+        else
+            $form['#prefix'] = '<div class="FormClass"> <h4>Add Category</h4>';
+        $form['#suffix'] = '</div>';
+        $form['actions']['submit']['#submit'][] = 'MYMODULE_submit2a';
+
+    }
+
+
+
+    if($form_id == 'product_node_form'){
+
+
+
+        //echo "<pre>";
+        //print_r($form);
+        //exit;
+        //$variables['content']['list_price'] = FALSE;
+        $form['taxonomy_catalog']['#type'] = 'hidden';
+        $form['base']['prices']['list_price']['#type'] = 'hidden';
+        $form['base']['prices']['cost']['#type'] = 'hidden';
+        $form['base']['shippable']['#type'] = 'hidden';
+        $form['base']['prices']['sell_price']['#title'] = 'Price';
+        //var_dump($form);
+        // exit;blog-node-form
+
+
+        $x=arg();
+        if($x[2]=='edit')
+            $form['#prefix'] = '<div class="FormClass"> <h4>Edit Product</h4>';
+        else
+            $form['#prefix'] = '<div class="FormClass"> <h4>Add Product</h4>';
+        $form['#suffix'] = '</div>';
+        $form['actions']['submit']['#submit'][] = 'Product';
+
+
+    }
+
+
+
+    if($form_id == 'uc_attribute_form'){
+
+        $x=arg();
+        //echo $x[4];
+        //exit;
+        if($x[4]=='add')
+            $form['#prefix'] = '<div class="FormClass1"> <h4>Add Attribute</h4>';
+        else
+            $form['#prefix'] = '<div class="FormClass1"> <h4>Edit Attribute</h4>';
+        $form['#suffix'] = '</div>';
+        // $form['actions']['submit']['#submit'][] = 'MYMODULE_submit3a';
+
+    }
+
+
+    if($form_id == 'uc_attribute_option_form'){
+
+        $x=arg();
+        //echo $x[4];
+        //exit;
+        if($x[6]=='add')
+            $form['#prefix'] = '<div class="FormClass1"> <h4>Add Options</h4>';
+        else
+            $form['#prefix'] = '<div class="FormClass1"> <h4>Edit Options</h4>';
+        $form['#suffix'] = '</div>';
+        // $form['actions']['submit']['#submit'][] = 'MYMODULE_submit3a';
+
+    }
+
+
+
+    if($form_id == 'blog_node_form'){
+
+        $form['#prefix'] = '<div class="FormClass">';
+        $form['#suffix'] = '</div>';
+        $form['actions']['submit']['#submit'][] = 'MYMODULE_submit4a';
+
+    }
+
+    if($form_id=='uc_object_attributes_form'){
+
+
+        // $form['actions']['op']['#title']='Remove';
+        $form['actions']['save']['#value']='Remove Selected';
+
+
+
+    }
+
+    if($form_id=='uc_attribute_options_form'){
+        $path = current_path();
+        //$ar=arg();
+        //var_dump($path);
+        $form['#prefix'] = '<div class="FormClass"><a href="/'.$path.'/add">Add Options</a>';
+        $form['#suffix'] = '</div>';
+        // $form['actions']['submit']['#submit'][] = 'MYMODULE_submit5a';
+    }
+
+    if($form_id=='uc_object_options_form'){
+
+
+        //echo "<pre>";
+        //var_dump(count($form['attributes']));
+        // var_dump($form['attributes'][1]['options']);
+
+        /*foreach($form['attributes'][1]['options'] as $v=>$a)
+
+        {
+            //var_dump($v."==".var_dump($a)."<br/>||||||");
+            var_dump($a['cost']);
+            $a['cost']["#title_display"]="invisible";;
+        }*/
+        //exit;
+
+    }
+
+
+
+    if($form_id=='webform_client_form_63'){
+        //drupal_get_messages(null, true);
+        $form['#prefix'] = '<div class="FormClass">';
+        $form['#suffix'] = '<div class="contact-footer"><span>Like Us On:</span><a class="fb" href="#">facebook</a><a class="twit" href="#">twitter</a><a class="print" href="#">printerest</a></div></div>';
+        //$form['actions']['submit']['#submit'][] = 'MYMODULE_submit11a';
+
+
+    }
+
+
+    if($form_id=='fit_report_content_node_form'){
+
+        // echo "<pre>";
+        //var_dump($form['edit']['und']['0']['format']);
+        //exit;
+        $x=arg();
+        if($x[2]=='edit')
+            $form['#prefix'] = '<div class="FormClass"> <h4>Edit Fit Report</h4>';
+        else
+            $form['#prefix'] = '<div class="FormClass"> <h4>ADD Fit Report</h4>';
+        $form['#suffix'] = '</div>';
+        //$form['#after_build'][] = 'CUSTOM_MODULE1_NODE_TYPE_node_form_after_build1';
+        $form['actions']['submit']['#submit'][] = 'MYMODULE_submit8a';
+
+    }
+
+    if($form_id=='fit_report_event_e_mail_content_node_form'){
+
+        // echo "<pre>";
+        //var_dump($form['edit']['und']['0']['format']);
+        //exit;
+
+
+        $form['#prefix'] = '<div class="FormClass"> <h4>Send Email</h4>';
+        $form['#suffix'] = '</div>';
+        //$form['#after_build'][] = 'CUSTOM_MODULE1_NODE_TYPE_node_form_after_build1';
+        $form['actions']['submit']['#submit'][] = 'MYMODULE_submitsendemail';
+
+
+    }
+
+
+    if($form_id=='fit_article_node_form'){
+
+        // echo "<pre>";
+        //var_dump($form['edit']['und']['0']['format']);
+        //exit;
+        $form['#prefix'] = '<div class="FormClass"> <h4>Manage Fit Report Content </h4>';
+        $form['#suffix'] = '</div>';
+        //$form['#after_build'][] = 'CUSTOM_MODULE1_NODE_TYPE_node_form_after_build1';
+        //$form['actions']['submit']['#submit'][] = 'MYMODULE_submit9a';
+
+    }
+
+    if($form_id=='user_profile_form'){
+
+        //echo "<pre>";
+        //print_r($form['user']['timezone']);
+        //exit;
+        $form['timezone']['#access']=false;
+        $form['#prefix'] = '<div> <h4>Manage Your Account</h4>';
+        $form['#suffix'] = '</div>';
+
+
+    }
+
+    if($form_id=='banner_image_node_form'){
+
+        $form['#prefix'] = '<div> <h4>Manage Banner Image & Content</h4>';
+        $form['#suffix'] = '</div>';
+
+
+
+    }
+
+
+    if($form_id=='fit_report_event_mail_node_form'){
+
+
+	 array_unshift($form['#validate'], 'email_check_validate');
+
+        $form['field_issend']['#access']=false;
+        $form['actions']['submit']['#value']='Submit';
+
+        $form['actions']['submit']['#submit'][] = 'MYMODULE_submit6a';
+
+    }
+
+
+
+    /* if($form_id=='fit_report_event_e_mail_content_node_form'){
+
+
+         $form['actions']['submit']['#submit'][] = 'MYMODULE_submit7a';
+     }*/
+}
+
+function CUSTOM_MODULE1_NODE_TYPE_node_form_after_build1($form) {
+    // We want this on a specific field
+    global $user;
+    //echo "<pre>";
+    //var_dump($user->roles);
+    //exit;
+    if (!in_array('administrator', $user->roles)){
+        //do stuff
+
+        $form['body']['und']['0']['format']['#access'] = FALSE;
+        return $form;
+
+
+    }
+    else{
+
+        return $form;
+
+    }
+
+}
+
+
+
+
+function register_alter_password_confirm1($element) {
+    $element['pass1']['#title_display'] = "invisible";
+    $element['pass1']['#attributes']['placeholder'] = t("Password");
+    $element['pass2']['#title_display'] = "invisible";
+    $element['pass2']['#attributes']['placeholder'] = t("Confirm password");
+    return $element;
+}
+
+function MYMODULE_submita ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/image-gallery-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit1a ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/video-gallery-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit2a ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/category-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit3a ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/product-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit4a ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/blog-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit5a ($form, &$form_state) {
+    //code here
+    $path = current_path();
+    var_dump($path);
+    $form_state['redirect'] = '/blog-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit8a ($form, &$form_state) {
+    //code here
+    $path = current_path();
+    //var_dump($path);
+    $form_state['redirect'] = '/report-listing'; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit6a ($form, &$form_state) {
+
+
+    //code here
+    global $base_url;
+    $path = current_path();
+    //var_dump($path);
+    drupal_get_messages(null, true);
+    drupal_set_message(t(' '));
+    $form_state['redirect'] =$base_url.'/fit-report?r=submit';
+    //REDIRECTS TO STEP 2 after submit
+    //header('Location:fit-report?r=submit');
+    //drupal_goto('fit-report?r=submit');
+
+}
+
+
+function Subscribemail_submit($form, &$form_state) {
+    //code here
+    global $base_url;
+    $path = current_path();
+    //var_dump($path);
+    //exit;
+    drupal_get_messages(null, true);
+    drupal_set_message(t(' '));
+    $form_state['redirect'] =$base_url.'/'.$path.'?subcription=submit';
+    //REDIRECTS TO STEP 2 after submit
+    //header('Location:fit-report?r=submit');
+    //drupal_goto('fit-report?r=submit');
+
+}
+
+function MYMODULE_submit7a ($form, &$form_state) {
+    //code here
+    $path = arg();
+    //var_dump($path);
+    //exit;
+
+
+
+
+    $form_state['redirect'] = 'event-mail-listing/'.$path[4]; //REDIRECTS TO STEP 2 after submit
+}
+
+function MYMODULE_submit11a ($form, &$form_state) {
+
+    //echo '1';
+    //exit;
+
+    drupal_get_messages(null, true);
+}
+
+
+function Product ($form, &$form_state) {
+    //code here
+    $form_state['redirect'] = '/product-listing-admin'; //REDIRECTS TO STEP 2 after submit
+}
+
+
+function MYMODULE_submitsendemail ($form, &$form_state) {
+    //code here
+    $path = arg();
+    //var_dump($path);
+    // exit;
+
+    $nid = $path[4];
+    $node = node_load($nid);
+    //$node->title = 'Updated Title Text';
+    //
+    $node->field_issend['und'][0]['value']=1;
+    $node->revision = 1;
+    field_attach_presave('node', $node);
+    field_attach_update('node', $node);
+
+    drupal_get_messages(null, true);
+    drupal_set_message(t(' Your Email has been sent successfully.'));
+    //exit;
+
+
+
+    $form_state['redirect'] = 'event-mails/'.$path[5].'/'.$path[6]; //REDIRECTS TO STEP 2 after submit
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*function MYMODULE_search_block_form($form, &$form_state) {
+    $form['keys'] = array(
+        '#type' => 'textfield',
+        '#size' => 15,
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Search',
+    );
+    return $form;
+}
+function MYMODULE_search_block_form_submit($form, &$form_state) {
+    drupal_goto('custom/node/search/' . $form_state['values']['keys']);
+}
+
+
+function MYMODULE_do_search($keys) {
+    // set the page title
+    drupal_set_title('FAQ search results');
+    // get the search results
+    $results = module_invoke('node', 'search_execute', $keys . " type:product");
+    return theme('search_results', array('results' => $results));
+}
+
+
+
+function MYMODULE_block_info() {
+    $blocks['faq_search'] = array(
+        'info' => t('Product Search Block'),
+        'cache' => DRUPAL_NO_CACHE,
+    );
+    return $blocks;
+}
+
+function MYMODULE_block_view($delta = '') {
+    $block = array();
+    switch ($delta) {
+        case 'faq_search':
+            $block['title'] = 'Custom Product Search';
+            $block['content'] = drupal_render(drupal_get_form('MYMODULE_search_block_form'));
+            break;
+    }
+    return $block;
+}
+
+
+*/
+function MYMODULE_preprocess_page(&$variables){
+    $search_box = drupal_render(drupal_get_form('search_form'));
+    $variables['search_box'] = $search_box;
+}
+
+
+function custommodule1_js_alter(&$javascript) {
+//var_dump($_GET['subcription']);
+    $x=arg();
+    $subcription=@$_GET['subcription'];
+    //var_dump($subcription);
+    //exit;
+    // Swap out jQuery to use an updated version of the library.
+    if(current_path()=='node/1' || $x[0]=='product-detail' ||current_path()=='node' ||current_path()=='node/4' ||current_path()=='node/2' ||$subcription=='submit' )
+        //var_dump( current_path());
+        $javascript['misc/jquery.js']['data'] = drupal_get_path('module', 'custommodule1') . '/js/jquery.js';
+}
+
+
+
+function custommodule1_node_view($node, $view_mode, $langcode){//replace your module name with MYMODULE here
+
+    $x=arg();
+    //$str=
+    //var_dump(current_path());
+    //exit;
+    $searchflag=0;
+    if($x[0]){
+
+
+        if(strpos(current_path(),'search/node')>-1){
+
+
+
+            // header('location:/product-detail/'.$node->nid);
+            $searchflag=1;
+            //var_dump($searchflag."==".current_path()."---".strpos(current_path(),'search/node'));
+            //exit;
+
+
+        }
+
+
+
+        if($node->type == 'product' && $x[0] != 'product-detail' &&  current_path()!= 'node/1' &&  current_path()!= 'product-listing-admin' && $searchflag==0){
+
+
+
+            header('location:/product-detail/'.$node->nid);
+            // echo "in block";
+            // exit;
+
+        }
+    }
+
+}
+
+function custommodule1_preprocess_search_result(&$variables) {
+    $result = $variables['result'];
+    if (isset($result['node'])) {
+        $variables['snippet'] = $result['node']->rendered;
+    }
+}
+
+
+function custommodule1_search($node) {
+    echo 1;
+    exit;
+}
+
+
+
+class MymoduleMailSystem1 extends DefaultMailSystem {
+    public function format(array $message) {
+        $message['body'] = implode("\n\n", $message['body']);
+        $message['body'] = drupal_wrap_mail($message['body']);
+        return $message;
+    }
+}
+
+
+function custommodule1_mail($key, &$message, $params) {
+    $order=$_GET['orderid'];
+
+//echo $key;
+    //exit;
+
+
+    switch ($key) {
+        case 'checkout':
+            $message['headers']['Content-Type'] = 'text/html; charset=UTF-8;';
+            $message['subject'] = $params['subject'];
+            $message['body'][] = $params['body'];
+
+            break;
+
+        case 'orderupdate':
+            $message['headers']['Content-Type'] = 'text/html; charset=UTF-8;';
+            $message['subject'] = $params['subject'];
+            $message['body'][] = $params['body'];
+            //drupal_goto('/admin/store/orders/'.$order);
+            break;
+
+
+
+    }
+
+    // if($key=='custommodule_mail'){
+
+    //echo 1;
+    //exit;
+
+    //drupal_goto('checkout-confirmation');
+    //}
+
+
+    //else
+    //drupal_goto('/admin/store/orders/'.$order);
+
+
+}
+
+
+
+
+
+
+
+function custommodule1_testmail() {
+
+    $orderid=@$_GET['orderid'];
+
+    //$orderid=$_GET['orderid'];
+    //$order_data = "Attachment file text";
+    //$filepath = file_directory_temp() . '/' . 'order' .$orderid . '.txt';
+    //file_put_contents($filepath, $order_data);
+
+
+
+//exit;
+
+
+    $x=uc_order_load($orderid);
+  /*echo '<pre>';
+    print_r($x);
+    exit;*/
+    $i=1;
+    $producthtml='';
+
+    foreach($x->products as $row){
+        $html='';
+
+        $attr=($row->data['attributes']);
+
+        foreach($attr as $aindex=>$val)
+        {
+            //echo $aindex;
+            $html="<div>:".$aindex;
+            //var_dump( $attr[$aindex]);
+            foreach($attr[$aindex] as $attrval)
+            {
+                $html.="<span>".$attrval."</span>";
+
+
+            }
+            //exit;
+            $html.="</div>";
+        }
+
+
+
+        $producthtml.='<tr>
+    <td colspan="4">
+    	<table width="100%" cellspacing="0" cellpadding="0" style="border-top:#b4b6b5 solid 2px;">
+  <tr>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">'.$i++.'</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">'.$row->title.'<br>'.$html.'</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">'.$row->qty.'</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">$'.$row->price.'</td>
+  </tr>
+</table>
+    </td>
+  </tr>';
+
+    }
+
+
+
+    $sitename= variable_get('site_name');
+    $site_email = variable_get('site_mail', '');
+
+
+    //if ($node->type == 'dynamic_content') {
+    $params['subject'] = 'Order Confirmation - Your Order with'.' '.$sitename.'.com ['.$x->order_id.'] '.' has been successfully placed!';
+    $params['body'] = '
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td align="center">
+    	<table width="600px" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td colspan="3" width="50%" bgcolor="#008081" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#FFFFFF; padding:20px 0 20px 10px"><span style="color:#8ce5e6;">Dear</span>'.' ' .$x->billing_first_name.' '.$x->billing_first_name.' '. '<span style="color:#8ce5e6;">Order Id:</span>'.$x->order_id.'</td>
+    <td bgcolor="#008081" width="50%" style="font-family:Arial, Helvetica, sans-serif; text-align:right; font-size:12px; color:#FFFFFF; padding:20px 10px 20px 0px"><span style="color:#8ce5e6;">Order Placed On:</span>'.date('d m Y',$x->created).'</td>
+  </tr>
+  <tr>
+    <td colspan="4" style="padding:15px 0;">
+    <a href="#"><img style="display:block; margin:0 auto;" src="http://influxhostserver.com/herozfitcart/sites/default/files/logo.png" border="0" /></a>
+    <p style="padding:15px 0 0 0; font-family:Arial, Helvetica, sans-serif; color:#828383; text-align:center; line-height:25px;">Thanks for ordering from '.$sitename.' . Here is a summary of your order.<br />
+    </p>    </td>
+  </tr>
+  <tr>
+    <td colspan="4" bgcolor="#202020" style="font-family:Arial, Helvetica, sans-serif; padding:15px 0; color:#FFFFFF; text-align:center;">Order Details</td>
+  </tr>
+
+  <tr>
+    <td colspan="4">
+    	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">S.no</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">Item name</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">Quantity</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">Price</td>
+  </tr>
+</table>
+	</td>
+  </tr>'.$producthtml.'<tr>
+    <td colspan="4" bgcolor="#008081" style="padding:10px 0;">
+    	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#ffffff;">
+  <tr>
+    <td width="50%" style="padding:5px 0 5px 10px;"><span style="color:#8ce5e6;">Billing Address:</span><br /><br />'.''.$x->billing_street1.','.$x->billing_city.','.$x->billing_postal_code.', USA</td>
+    <td width="50%" style="padding:5px 10px 5px 0px; text-align:right; font-size:15px;"><span style="color:#8ce5e6;">Total Amount:</span> $'.$x->line_items[0]['amount'].'<br /><br /><span style="color:#8ce5e6;">Shipping Charges:</span> $0<br /><br /><span style="color:#8ce5e6;">Payable Amount:</span> $'.$x->order_total.'</td>
+  </tr>
+</table>
+
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="4" bgcolor="#202020" style="font-family:Arial, Helvetica, sans-serif; color:#FFFFFF; padding:10px 0; text-align:center; font-size:12px;">Copyright © All rights Reserved.</td>
+  </tr>
+</table>
+
+    </td>
+  </tr>
+</table>
+
+</body>';
+
+
+    //$params['attachment']=$attachment;
+
+
+    //$to = variable_get('site_mail', '');
+    $to = $x->primary_email;
+    //echo $x->primary_email;
+    //exit;
+    $from = variable_get('site_mail', '');
+    $lang = language_default();
+    //var_dump( $params);
+    //exit;
+    //$x=drupal_mail('custommodule1', 'checkout', $to, $lang, $params, $from);
+    //$x=drupal_mail('developer@the-webdevelopers.com', 'bhaskar.involutiontech@gmail.com',  $params['subject'], $params['body']);
+    $x=simple_mail_send('Support <'.$from.'>', $to,  $params['subject'], $params['body']);
+    //var_dump($x);
+    //exit;
+
+    drupal_goto('checkout-confirmation');
+
+
+    //header('location:checkout-confirmation');
+    //}
+}
+
+
+
+
+function custommodule1_testmail12() {
+
+
+
+
+    //header('location:checkout-confirmation');
+    //}
+}
+
+
+
+
+function custommodule1_orderstatusmail() {
+
+
+
+    $orderid=@$_GET['orderid'];
+    $urlpath=$_SERVER['HTTP_REFERER'];
+    if (strpos($urlpath, "checkout")==true){
+
+        custommodule1_testmail();
+
+        return false;
+
+    }
+
+    //$orderid=$_GET['orderid'];
+
+
+
+    $x=uc_order_load($orderid);
+    //echo '<pre>';
+    //print_r($x);
+    //exit;
+    $i=1;
+    $producthtml='';
+
+    foreach($x->products as $row){
+        $html='';
+
+        $attr=($row->data['attributes']);
+
+        foreach($attr as $aindex=>$val)
+        {
+            //echo $aindex;
+            $html="<div>:".$aindex;
+            //var_dump( $attr[$aindex]);
+            foreach($attr[$aindex] as $attrval)
+            {
+                $html.="<span>".$attrval."</span>";
+
+
+            }
+            //exit;
+            $html.="</div>";
+        }
+        //exit;
+
+        $producthtml.='<tr>
+    <td colspan="4">
+    	<table width="100%" cellspacing="0" cellpadding="0" style="border-top:#b4b6b5 solid 2px;">
+  <tr>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">'.$i++.'</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">'.$row->title.'<br>'.$html.'</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">'.$row->qty.'</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#202020; text-align:center; padding:15px 0;">$'.$row->price.'</td>
+  </tr>
+</table>
+    </td>
+  </tr>';
+
+    }
+
+    $sitename= variable_get('site_name');
+
+
+    //if ($node->type == 'dynamic_content') {
+    $params['subject'] = $x->order_status.' of your order ['.$x->order_id.'] with '.$sitename;
+    $params['body'] = '
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td align="center">
+    	<table width="600px" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td colspan="3" width="50%" bgcolor="#008081" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#FFFFFF; padding:20px 0 20px 10px"><span style="color:#8ce5e6;">Dear</span>'.' ' .$x->billing_first_name.' '.$x->billing_first_name.' '. '<span style="color:#8ce5e6;">Order Id:</span>'.$x->order_id.'</td>
+    <td bgcolor="#008081" width="50%" style="font-family:Arial, Helvetica, sans-serif; text-align:right; font-size:12px; color:#FFFFFF; padding:20px 10px 20px 0px"><span style="color:#8ce5e6;">Order Placed On:</span>'.date('d m Y',$x->created).'</td>
+  </tr>
+  <tr>
+    <td colspan="4" style="padding:15px 0;">
+    <a href="#"><img style="display:block; margin:0 auto;" src="http://influxhostserver.com/herozfitcart/sites/default/files/logo.png" border="0" /></a>
+    <p style="padding:15px 0 0 0; font-family:Arial, Helvetica, sans-serif; color:#828383; text-align:center; line-height:25px;">Greetings from'.' '.$sitename.' <br /><br />
+    We would like to inform you that we are processing your'.' '.$x->order_status.' request for the following items in the Order '.$x->order_id .'.
+    </p>    </td>
+  </tr>
+  <tr>
+    <td colspan="4" bgcolor="#202020" style="font-family:Arial, Helvetica, sans-serif; padding:15px 0; color:#FFFFFF; text-align:center;">Order Details</td>
+  </tr>
+
+  <tr>
+    <td colspan="4">
+    	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">S.no</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">Item name</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">Quantity</td>
+    <td width="25%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#008081; text-align:center; padding:15px 0;">Price</td>
+  </tr>
+</table>
+	</td>
+  </tr>'.$producthtml.'<tr>
+    <td colspan="4" bgcolor="#008081" style="padding:10px 0;">
+    	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#ffffff;">
+  <tr>
+    <td width="50%" style="padding:5px 0 5px 10px;"><span style="color:#8ce5e6;">Billing Address:</span><br /><br />'.''.$x->billing_street1.','.$x->billing_city.','.$x->billing_postal_code.', USA</td>
+    <td width="50%" style="padding:5px 10px 5px 0px; text-align:right; font-size:15px;"><span style="color:#8ce5e6;">Total Amount:</span> $'.$x->line_items[0]['amount'].'<br /><br /><span style="color:#8ce5e6;">Shipping Charges:</span> $0<br /><br /><span style="color:#8ce5e6;">Payable Amount:</span> $'.$x->order_total.'</td>
+  </tr>
+</table>
+
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="4" bgcolor="#202020" style="font-family:Arial, Helvetica, sans-serif; color:#FFFFFF; padding:10px 0; text-align:center; font-size:12px;">Copyright © All rights Reserved.</td>
+  </tr>
+</table>
+
+    </td>
+  </tr>
+</table>
+
+</body>';
+    //$to = variable_get('site_mail', '');
+    //$to = 'bhaskar.involutiontech@gmail.com';
+    $to = $x->primary_email;
+    $from = variable_get('site_mail', '');
+    $lang = language_default();
+    //$x=drupal_mail('custommodule1', 'orderupdate', $to, $lang, $params, $from);
+    $x=simple_mail_send('Support <'.$from.'>', 'bhaskar.involutiontech@gmail.com',  $params['subject'], $params['body']);
+    drupal_goto('/admin/store/orders/'.$orderid);
+
+
+
+    //}
+}
+
+function email_check_validate($form, &$form_state){
+
+//var_dump($form_state['values']['title']);
+//exit;
+
+$mail = $form_state['values']['submitted_tree']['title'];
+if (!valid_email_address($form_state['values']['title'])) {
+  form_set_error('[submitted][email_address]', t('The email address appears to be invalid.'));
+}
+
+
+
+
+}
+

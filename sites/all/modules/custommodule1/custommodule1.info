@@ -1,0 +1,11 @@
+name = custommodule1
+description = Module for overriding many default drupal stuffs.
+package = custommodule1
+core = 7.x
+
+
+; Information added by Drupal.org packaging script on 2014-07-10
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "Herozfit"
+datestamp = "1405030771"
